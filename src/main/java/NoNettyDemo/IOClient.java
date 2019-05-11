@@ -10,7 +10,7 @@ import java.util.Date;
  * @Version: 1.0
  * @Function:
  * @Description:
- *  客户端
+ *  传统IO客户端
  */
 public class IOClient {
 
