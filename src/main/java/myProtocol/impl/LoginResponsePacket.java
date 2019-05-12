@@ -1,0 +1,51 @@
+package myProtocol.impl;
+
+import myProtocol.Packet;
+
+import static myProtocol.Command.LOGIN_RESPONSE;
+
+/**
+ * @Author: pyh
+ * @Date: 2019/5/12 15:26
+ * @Version: 1.0
+ * @Function:
+ * @Description:
+ *  登录相应包
+ */
+public class LoginResponsePacket extends Packet {
+
+    private boolean success;
+
+    private String reason;
+
+    @Override
+    public Byte getCommand() {
+        return LOGIN_RESPONSE;
+    }
+
+    @Override
+    public Byte getVersion() {
+        return super.getVersion();
+    }
+
+    @Override
+    public void setVersion(Byte version) {
+        super.setVersion(version);
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+}

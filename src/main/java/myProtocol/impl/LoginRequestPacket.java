@@ -15,7 +15,7 @@ import static myProtocol.Command.LOGIN_REQUEST;
 public class LoginRequestPacket extends Packet {
 
     //用户ID
-    private Integer userId;
+    private String userId;
 
     //用户名
     private String userName;
@@ -26,14 +26,6 @@ public class LoginRequestPacket extends Packet {
     @Override
     public Byte getCommand() {
         return LOGIN_REQUEST;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public String getUserName() {
@@ -50,5 +42,13 @@ public class LoginRequestPacket extends Packet {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

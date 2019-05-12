@@ -24,11 +24,11 @@ public class PacketCodeCTest {
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
 
         loginRequestPacket.setVersion((byte)1);
-        loginRequestPacket.setUserId(123);
+        loginRequestPacket.setUserId("123");
         loginRequestPacket.setUserName("张三");
         loginRequestPacket.setPassword("password");
 
-        PacketCodeC packetCodeC = new PacketCodeC();
+        PacketCodeC packetCodeC = PacketCodeC.INSTANCE;
         ByteBuf byteBuf = packetCodeC.encode(loginRequestPacket);
         Packet decodedPacket = packetCodeC.decode(byteBuf);
 

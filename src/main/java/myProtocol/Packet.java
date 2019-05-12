@@ -1,5 +1,7 @@
 package myProtocol;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * @Author: pyh
  * @Date: 2019/5/11 20:29
@@ -16,11 +18,13 @@ public abstract class Packet {
     /**
      * 协议版本
      * */
+    @JSONField(deserialize = false, serialize = false)
     private Byte version = 1;
 
     /**
      * 指令
      * */
+    @JSONField(serialize = false)
     public abstract Byte getCommand();
 
     //get 方法
