@@ -1,10 +1,12 @@
 package LoginAndCommunicate.client.handler;
 
-import LoginAndCommunicate.SendAndReceive.LoginUtil;
+import LoginAndCommunicate.session.Session;
+import LoginAndCommunicate.util.LoginUtil;
+import LoginAndCommunicate.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import LoginAndCommunicate.myProtocol.impl.LoginRequestPacket;
-import LoginAndCommunicate.myProtocol.impl.LoginResponsePacket;
+import LoginAndCommunicate.packet.LoginRequestPacket;
+import LoginAndCommunicate.packet.LoginResponsePacket;
 
 import java.util.Date;
 import java.util.UUID;
@@ -33,11 +35,14 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket) throws Exception {
+        String userId = loginResponsePacket.getUserId();
+        String userName = loginResponsePacket.getUserName();
+
         if (loginResponsePacket.isSuccess()) {
-            System.out.println(new Date() + ": 客户端登录成功");
-            LoginUtil.markAsLogin(ctx.channel());
+            System.out.println("[" + userName + "]登录成功，userId 为: " + loginResponsePacket.getUserId());
+            SessionUtil.bindSession(new Session(userId, userName), ctx.channel());
         } else {
-            System.out.println(new Date() + ": 客户端登录失败，原因：" + loginResponsePacket.getReason());
+            System.out.println("[" + userName + "]登录失败，原因：" + loginResponsePacket.getReason());
         }
     }
 

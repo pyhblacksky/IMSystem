@@ -1,4 +1,4 @@
-package Netty_Communication.client;
+package NettyDemo.Netty_Communication.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;

@@ -1,4 +1,4 @@
-package LoginAndCommunicate.SendAndReceive;
+package LoginAndCommunicate.util;
 
 import io.netty.channel.Channel;
 import io.netty.util.Attribute;

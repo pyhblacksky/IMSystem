@@ -1,14 +1,14 @@
 package LoginAndCommunicate.server.handler;
 
-import LoginAndCommunicate.SendAndReceive.MessageRequestPacket;
-import LoginAndCommunicate.SendAndReceive.MessageResponsePacket;
+import LoginAndCommunicate.packet.MessageRequestPacket;
+import LoginAndCommunicate.packet.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import LoginAndCommunicate.myProtocol.Packet;
 import LoginAndCommunicate.myProtocol.PacketCodeC;
-import LoginAndCommunicate.myProtocol.impl.LoginRequestPacket;
-import LoginAndCommunicate.myProtocol.impl.LoginResponsePacket;
+import LoginAndCommunicate.packet.LoginRequestPacket;
+import LoginAndCommunicate.packet.LoginResponsePacket;
 
 import java.util.Date;
 

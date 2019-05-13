@@ -1,4 +1,4 @@
-package LoginAndCommunicate.spliter;
+package LoginAndCommunicate.util;
 
 import LoginAndCommunicate.myProtocol.PacketCodeC;
 import io.netty.buffer.ByteBuf;

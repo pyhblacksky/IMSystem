@@ -1,7 +1,5 @@
 package LoginAndCommunicate.myProtocol;
 
-import LoginAndCommunicate.myProtocol.impl.JSONSerializer;
-
 /**
  * @Author: pyh
  * @Date: 2019/5/11 20:40

@@ -1,4 +1,4 @@
-package LoginAndCommunicate.myProtocol.impl;
+package LoginAndCommunicate.myProtocol;
 
 import com.alibaba.fastjson.JSON;
 import LoginAndCommunicate.myProtocol.Serializer;

@@ -17,7 +17,7 @@ import java.util.List;
  *
  *  解耦合
  */
-public class PacketDecode extends ByteToMessageDecoder {
+public class PacketDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         out.add(PacketCodeC.INSTANCE.decode(in));

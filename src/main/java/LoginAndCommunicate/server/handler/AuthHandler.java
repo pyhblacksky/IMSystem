@@ -1,6 +1,6 @@
 package LoginAndCommunicate.server.handler;
 
-import LoginAndCommunicate.SendAndReceive.LoginUtil;
+import LoginAndCommunicate.util.LoginUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 

@@ -1,4 +1,4 @@
-package LoginAndCommunicate.myProtocol.impl;
+package LoginAndCommunicate.packet;
 
 /**
  * @Author: pyh
