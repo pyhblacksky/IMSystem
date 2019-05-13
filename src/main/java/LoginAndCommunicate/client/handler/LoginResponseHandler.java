@@ -28,9 +28,8 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         loginRequestPacket.setPassword("pwd");
 
         // 写数据
-        ctx.channel().writeAndFlush(loginRequestPacket);
+        ctx.channel().writeAndFlush(loginRequestPacket);//如果验证无身份证认证，注释此行
     }
-
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket) throws Exception {
@@ -40,5 +39,10 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         } else {
             System.out.println(new Date() + ": 客户端登录失败，原因：" + loginResponsePacket.getReason());
         }
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        System.out.println("客户端连接被关闭!");
     }
 }

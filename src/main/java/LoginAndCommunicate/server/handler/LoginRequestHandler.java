@@ -1,5 +1,6 @@
 package LoginAndCommunicate.server.handler;
 
+import LoginAndCommunicate.SendAndReceive.LoginUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import LoginAndCommunicate.myProtocol.impl.LoginRequestPacket;
@@ -27,6 +28,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         loginResponsePacket.setVersion(loginRequestPacket.getVersion());
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
+            LoginUtil.markAsLogin(ctx.channel());//设置登录成功
             System.out.println(new Date() + ": 登录成功!  欢迎您" + loginRequestPacket.getUserName());
         } else {
             loginResponsePacket.setReason("账号密码校验失败");

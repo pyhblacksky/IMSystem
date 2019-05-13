@@ -122,4 +122,26 @@ public class NettyClient {
                 }
         }).start();
     }
+
+    //启动控制台线程, 假设无身份确认的，用于测试
+    private static void startConsoleThread1(final Channel channel){
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        while(!Thread.interrupted()){
+                            //if(LoginUtil.hasLogin(channel)){//是登录状态，允许控制台输入消息
+                                System.out.println("输入消息发送至服务端：");
+                                Scanner sc = new Scanner(System.in);
+                                String line = sc.nextLine();
+
+                                MessageRequestPacket packet = new MessageRequestPacket();
+                                packet.setMessage(line);
+                                ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(channel.alloc(), packet);
+                                channel.writeAndFlush(byteBuf);
+                            //}
+                        }
+                    }
+                }).start();
+    }
 }

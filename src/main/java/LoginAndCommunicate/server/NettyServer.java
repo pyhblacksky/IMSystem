@@ -2,6 +2,8 @@ package LoginAndCommunicate.server;
 
 import LoginAndCommunicate.codec.PacketDecode;
 import LoginAndCommunicate.codec.PacketEncoder;
+import LoginAndCommunicate.server.handler.AuthHandler;
+import LoginAndCommunicate.server.handler.LifeCycleTestHandler;
 import LoginAndCommunicate.server.handler.LoginRequestHandler;
 import LoginAndCommunicate.server.handler.MessageRequestHandler;
 import LoginAndCommunicate.spliter.Spliter;
@@ -43,11 +45,16 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     protected void initChannel(NioSocketChannel ch) {
                         //ch.pipeline().addLast(new ServerHandler());//自定义的 Handle
+
+                        //生命周期测试
+                        //ch.pipeline().addLast(new LifeCycleTestHandler());
+
                         //使用pipLine()的方式， 登录和发送消息
                         /*拆包器，netty自带*/
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecode());
                         ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new AuthHandler());//新增用户认证的handler
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
 
