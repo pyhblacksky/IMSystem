@@ -1,6 +1,7 @@
 package LoginAndCommunicate.server.handler;
 
 import LoginAndCommunicate.session.Session;
+import LoginAndCommunicate.util.IDUtil;
 import LoginAndCommunicate.util.LoginUtil;
 import LoginAndCommunicate.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,9 +33,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         loginResponsePacket.setUserName(loginRequestPacket.getUserName());
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
-            String userId = randomUserId();
+            String userId = IDUtil.randomId();
             loginResponsePacket.setUserId(userId);
-            LoginUtil.markAsLogin(ctx.channel());//设置登录成功
             System.out.println(new Date() + ": 登录成功!  欢迎您" + loginRequestPacket.getUserName());
             SessionUtil.bindSession(new Session(userId, loginRequestPacket.getUserName()), ctx.channel());
         } else {

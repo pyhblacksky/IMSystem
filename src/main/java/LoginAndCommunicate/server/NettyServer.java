@@ -3,6 +3,7 @@ package LoginAndCommunicate.server;
 import LoginAndCommunicate.codec.PacketDecoder;
 import LoginAndCommunicate.codec.PacketEncoder;
 import LoginAndCommunicate.server.handler.AuthHandler;
+import LoginAndCommunicate.server.handler.CreateGroupRequestHandler;
 import LoginAndCommunicate.server.handler.LoginRequestHandler;
 import LoginAndCommunicate.server.handler.MessageRequestHandler;
 import LoginAndCommunicate.util.Spliter;
@@ -55,6 +56,8 @@ public class NettyServer {
                         ch.pipeline().addLast(new LoginRequestHandler());
                         ch.pipeline().addLast(new AuthHandler());//新增用户认证的handler
                         ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new CreateGroupRequestHandler());
+                        //ch.pipeline().addLast(new LogoutRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
 
                         //粘包测试

@@ -2,6 +2,7 @@ package LoginAndCommunicate.util;
 
 import LoginAndCommunicate.session.Session;
 import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +21,9 @@ public class SessionUtil {
     //userId -> channel的映射
     private static final Map<String, Channel> userIdChannelMap = new ConcurrentHashMap<String, Channel>();
 
+    //groupId -> channelGroup的映射
+    private static final Map<String, ChannelGroup> groupIdChannelGroupMap = new ConcurrentHashMap<String, ChannelGroup>();
+
     //绑定session
     public static void bindSession(Session session, Channel channel){
         userIdChannelMap.put(session.getUserId(), channel);
@@ -29,14 +33,16 @@ public class SessionUtil {
     //取消绑定session
     public static void unBindSession(Channel channel){
         if(hasLogin(channel)){
-            userIdChannelMap.remove(getSession(channel).getUserId());
+            Session session = getSession(channel);
+            userIdChannelMap.remove(session.getUserId());
             channel.attr(Attributes.SESSION).set(null);
+            System.out.println(session + " 退出登录!");
         }
     }
 
 
     public static boolean hasLogin(Channel channel) {
-        return channel.hasAttr(Attributes.SESSION);
+        return getSession(channel) != null;
     }
 
     public static Session getSession(Channel channel) {

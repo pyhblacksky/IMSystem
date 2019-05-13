@@ -1,5 +1,8 @@
 package LoginAndCommunicate.client;
 
+import LoginAndCommunicate.client.handler.CreateGroupResponseHandler;
+import LoginAndCommunicate.console.impl.ConsoleCommandManager;
+import LoginAndCommunicate.console.impl.LoginConsoleCommand;
 import LoginAndCommunicate.packet.LoginRequestPacket;
 import LoginAndCommunicate.util.LoginUtil;
 import LoginAndCommunicate.packet.MessageRequestPacket;
@@ -60,7 +63,9 @@ public class NettyClient {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
+                        //ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new CreateGroupResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
 
                         //粘包测试
@@ -100,8 +105,29 @@ public class NettyClient {
         });
     }
 
-    //单聊，多用户登录测试
+    //群聊，多用户
     private static void startConsoleThread(final Channel channel){
+        final ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+        final LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+        final Scanner scanner = new Scanner(System.in);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.interrupted()){
+                    if(!SessionUtil.hasLogin(channel)){
+                        loginConsoleCommand.exec(scanner, channel);
+                    } else{
+                        consoleCommandManager.exec(scanner, channel);
+                    }
+                }
+            }
+        }).start();
+    }
+
+
+    //单聊，多用户登录测试
+    private static void startConsoleThread3(final Channel channel){
         final Scanner sc = new Scanner(System.in);
         final LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
 
