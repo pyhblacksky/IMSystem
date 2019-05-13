@@ -1,12 +1,12 @@
-package myProtocol;
+package LoginAndCommunicate.myProtocol;
 
 import LoginAndCommunicate.SendAndReceive.MessageRequestPacket;
 import LoginAndCommunicate.SendAndReceive.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import myProtocol.impl.JSONSerializer;
-import myProtocol.impl.LoginRequestPacket;
-import myProtocol.impl.LoginResponsePacket;
+import LoginAndCommunicate.myProtocol.impl.JSONSerializer;
+import LoginAndCommunicate.myProtocol.impl.LoginRequestPacket;
+import LoginAndCommunicate.myProtocol.impl.LoginResponsePacket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @Function:
  * @Description:
  *  编码 和 解码相关类
- */import static myProtocol.Command.*;
+ */import static LoginAndCommunicate.myProtocol.Command.*;
 
 public class PacketCodeC {
     private static final int MAGIC_NUMBER = 0x12345678;//自定义魔数
@@ -82,7 +82,21 @@ public class PacketCodeC {
 
         return byteBuf;
     }
+    /**
+     * 重载函数
+     * */
+    public void encode(ByteBuf byteBuf, Packet packet) {
+        // 1. 序列化 java 对象
+        byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
+        // 2. 实际编码过程
+        byteBuf.writeInt(MAGIC_NUMBER);
+        byteBuf.writeByte(packet.getVersion());
+        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
+        byteBuf.writeByte(packet.getCommand());
+        byteBuf.writeInt(bytes.length);
+        byteBuf.writeBytes(bytes);
+    }
 
 
     /**
@@ -116,8 +130,6 @@ public class PacketCodeC {
 
         return null;
     }
-
-
 
     private Serializer getSerializer(byte serializeAlgorithm) {
         return serializerMap.get(serializeAlgorithm);

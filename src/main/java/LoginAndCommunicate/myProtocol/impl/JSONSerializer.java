@@ -1,8 +1,8 @@
-package myProtocol.impl;
+package LoginAndCommunicate.myProtocol.impl;
 
 import com.alibaba.fastjson.JSON;
-import myProtocol.Serializer;
-import myProtocol.SerializerAlgorithm;
+import LoginAndCommunicate.myProtocol.Serializer;
+import LoginAndCommunicate.myProtocol.SerializerAlgorithm;
 
 /**
  * @Author: pyh

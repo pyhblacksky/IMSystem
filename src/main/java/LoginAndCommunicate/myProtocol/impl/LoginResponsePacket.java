@@ -1,8 +1,8 @@
-package myProtocol.impl;
+package LoginAndCommunicate.myProtocol.impl;
 
-import myProtocol.Packet;
+import LoginAndCommunicate.myProtocol.Packet;
 
-import static myProtocol.Command.LOGIN_RESPONSE;
+import static LoginAndCommunicate.myProtocol.Command.LOGIN_RESPONSE;
 
 /**
  * @Author: pyh

@@ -1,6 +1,6 @@
-package myProtocol;
+package LoginAndCommunicate.myProtocol;
 
-import myProtocol.impl.JSONSerializer;
+import LoginAndCommunicate.myProtocol.impl.JSONSerializer;
 
 /**
  * @Author: pyh

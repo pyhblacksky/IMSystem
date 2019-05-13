@@ -1,9 +1,9 @@
 import io.netty.buffer.ByteBuf;
-import myProtocol.Packet;
-import myProtocol.PacketCodeC;
-import myProtocol.Serializer;
-import myProtocol.impl.JSONSerializer;
-import myProtocol.impl.LoginRequestPacket;
+import LoginAndCommunicate.myProtocol.Packet;
+import LoginAndCommunicate.myProtocol.PacketCodeC;
+import LoginAndCommunicate.myProtocol.Serializer;
+import LoginAndCommunicate.myProtocol.impl.JSONSerializer;
+import LoginAndCommunicate.myProtocol.impl.LoginRequestPacket;
 import org.junit.Assert;
 import org.junit.Test;
 

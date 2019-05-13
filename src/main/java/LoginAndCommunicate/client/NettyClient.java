@@ -2,6 +2,11 @@ package LoginAndCommunicate.client;
 
 import LoginAndCommunicate.SendAndReceive.LoginUtil;
 import LoginAndCommunicate.SendAndReceive.MessageRequestPacket;
+import LoginAndCommunicate.client.handler.ClientHandler;
+import LoginAndCommunicate.client.handler.LoginResponseHandler;
+import LoginAndCommunicate.client.handler.MessageResponseHandler;
+import LoginAndCommunicate.codec.PacketDecode;
+import LoginAndCommunicate.codec.PacketEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -13,7 +18,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import myProtocol.PacketCodeC;
+import LoginAndCommunicate.myProtocol.PacketCodeC;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -47,7 +52,12 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new ClientHandler());
+                        //ch.pipeline().addLast(new ClientHandler());//自定义的处理器
+                        //使用pipeLine()方式
+                        ch.pipeline().addLast(new PacketDecode());
+                        ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 

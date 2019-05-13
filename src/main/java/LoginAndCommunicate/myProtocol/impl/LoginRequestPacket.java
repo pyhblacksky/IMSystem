@@ -1,4 +1,4 @@
-package myProtocol.impl;
+package LoginAndCommunicate.myProtocol.impl;
 
 /**
  * @Author: pyh
@@ -8,9 +8,9 @@ package myProtocol.impl;
  * @Description:
  */
 
-import myProtocol.Packet;
+import LoginAndCommunicate.myProtocol.Packet;
 
-import static myProtocol.Command.LOGIN_REQUEST;
+import static LoginAndCommunicate.myProtocol.Command.LOGIN_REQUEST;
 
 public class LoginRequestPacket extends Packet {
 

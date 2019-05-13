@@ -1,8 +1,8 @@
 package LoginAndCommunicate.SendAndReceive;
 
-import myProtocol.Packet;
+import LoginAndCommunicate.myProtocol.Packet;
 
-import static myProtocol.Command.MESSAGE_RESPONSE;
+import static LoginAndCommunicate.myProtocol.Command.MESSAGE_RESPONSE;
 
 /**
  * @Author: pyh

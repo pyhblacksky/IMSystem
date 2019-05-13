@@ -1,5 +1,10 @@
 package LoginAndCommunicate.server;
 
+import LoginAndCommunicate.codec.PacketDecode;
+import LoginAndCommunicate.codec.PacketEncoder;
+import LoginAndCommunicate.server.handler.LoginRequestHandler;
+import LoginAndCommunicate.server.handler.MessageRequestHandler;
+import LoginAndCommunicate.server.handler.ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -37,7 +42,12 @@ public class NettyServer {
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast(new ServerHandler());//自定义的 Handle
+                        //ch.pipeline().addLast(new ServerHandler());//自定义的 Handle
+                        //使用pipLine()的方式
+                        ch.pipeline().addLast(new PacketDecode());
+                        ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 
