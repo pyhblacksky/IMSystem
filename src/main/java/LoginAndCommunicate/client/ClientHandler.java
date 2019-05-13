@@ -1,5 +1,7 @@
-package ClientLogin.client;
+package LoginAndCommunicate.client;
 
+import LoginAndCommunicate.SendAndReceive.LoginUtil;
+import LoginAndCommunicate.SendAndReceive.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -39,7 +41,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         ctx.channel().writeAndFlush(buffer);
     }
 
-    //客户端处理登录响应
+    //客户端处理收到报文
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf byteBuf = (ByteBuf) msg;
@@ -50,10 +52,15 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
             LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
 
             if(loginResponsePacket.isSuccess()){
+                LoginUtil.markAsLogin(ctx.channel());//设置登录标志位
                 System.out.println(new Date() + " : 客户端登录成功");
             } else{
                 System.out.println(new Date() + " : 客户端登录失败，原因："+ loginResponsePacket.getReason());
             }
+        } else if(packet instanceof MessageResponsePacket){
+            //客户端收到服务端的消息回执
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
+            System.out.println(new Date() + " : 收到服务端的消息 :" + messageResponsePacket.getMessage());
         }
     }
 }

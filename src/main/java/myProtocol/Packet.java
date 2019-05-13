@@ -34,5 +34,5 @@ public abstract class Packet {
     //set方法
     public void setVersion(Byte version){
         this.version = version;
-    };
+    }
 }

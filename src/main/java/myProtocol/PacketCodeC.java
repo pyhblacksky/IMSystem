@@ -1,11 +1,12 @@
 package myProtocol;
 
+import LoginAndCommunicate.SendAndReceive.MessageRequestPacket;
+import LoginAndCommunicate.SendAndReceive.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import myProtocol.impl.JSONSerializer;
 import myProtocol.impl.LoginRequestPacket;
-import myProtocol.Packet;
-import myProtocol.Serializer;
+import myProtocol.impl.LoginResponsePacket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +18,7 @@ import java.util.Map;
  * @Function:
  * @Description:
  *  编码 和 解码相关类
- */
-import static myProtocol.Command.LOGIN_REQUEST;
+ */import static myProtocol.Command.*;
 
 public class PacketCodeC {
     private static final int MAGIC_NUMBER = 0x12345678;//自定义魔数
@@ -31,6 +31,9 @@ public class PacketCodeC {
     private PacketCodeC() {
         packetTypeMap = new HashMap();
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap();
         Serializer serializer = new JSONSerializer();

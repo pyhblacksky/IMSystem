@@ -1,4 +1,4 @@
-package ClientLogin.server;
+package LoginAndCommunicate.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;

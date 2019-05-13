@@ -28,11 +28,6 @@ public class LoginResponsePacket extends Packet {
         return super.getVersion();
     }
 
-    @Override
-    public void setVersion(Byte version) {
-        super.setVersion(version);
-    }
-
     public boolean isSuccess() {
         return success;
     }
