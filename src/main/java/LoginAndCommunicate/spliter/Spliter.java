@@ -1,19 +1,23 @@
-package LoginAndCommunicate.myProtocol;
+package LoginAndCommunicate.spliter;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import LoginAndCommunicate.myProtocol.PacketCodeC;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
  * @Author: pyh
- * @Date: 2019/5/11 20:29
+ * @Date: 2019/5/13 14:17
  * @Version: 1.0
  * @Function:
  * @Description:
- *  通信过程中的Java对象
+ *  分割器
  *
- *  是通信过程中 Java 对象的抽象类，定义了一个版本号（默认值为 1 ）以及一个获取指令的抽象方法，
- *  所有的指令数据包都必须实现这个方法，这样我们就可以知道某种指令的含义。
+ *  拒绝非本协议连接。 使用自定义协议中的魔数来进行隔离
+ *
+ *  同时满足拆包的需求
  */
-public abstract class Packet {
+public class Spliter extends LengthFieldBasedFrameDecoder {
 
     /**
      * 注意，在协议中，由于存在拆包粘包的问题，需要使用netty自带的拆包器
@@ -32,24 +36,21 @@ public abstract class Packet {
      * new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4);
      * */
 
-    /**
-     * 协议版本
-     * */
-    @JSONField(deserialize = false, serialize = false)
-    private Byte version = 1;
+    private static final int LENGTH_FIELD_OFFSET = 7;   //偏移量
+    private static final int LENGTH_FIELD_LENGTH = 4;   //数据长度的存储域长度
 
-    /**
-     * 指令
-     * */
-    @JSONField(serialize = false)
-    public abstract Byte getCommand();
-
-    //get 方法
-    public Byte getVersion(){
-        return version;
+    public Spliter(){
+        super(Integer.MAX_VALUE, LENGTH_FIELD_OFFSET, LENGTH_FIELD_LENGTH);
     }
-    //set方法
-    public void setVersion(Byte version){
-        this.version = version;
+
+    @Override
+    protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
+        //隔离非本协议的客户端
+        if(in.getInt(in.readerIndex()) != PacketCodeC.MAGIC_NUMBER){
+            ctx.channel().close();
+            return null;
+        }
+
+        return super.decode(ctx, in);
     }
 }

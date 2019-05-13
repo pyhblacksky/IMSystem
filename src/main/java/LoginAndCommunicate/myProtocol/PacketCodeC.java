@@ -21,7 +21,7 @@ import java.util.Map;
  */import static LoginAndCommunicate.myProtocol.Command.*;
 
 public class PacketCodeC {
-    private static final int MAGIC_NUMBER = 0x12345678;//自定义魔数
+    public static final int MAGIC_NUMBER = 0x12345678;//自定义魔数
     private final Map<Byte, Class<? extends Packet>> packetTypeMap;
     private final Map<Byte, Serializer> serializerMap;
 

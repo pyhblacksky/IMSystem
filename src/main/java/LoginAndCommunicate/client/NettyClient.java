@@ -3,10 +3,12 @@ package LoginAndCommunicate.client;
 import LoginAndCommunicate.SendAndReceive.LoginUtil;
 import LoginAndCommunicate.SendAndReceive.MessageRequestPacket;
 import LoginAndCommunicate.client.handler.ClientHandler;
+import LoginAndCommunicate.client.handler.FirstClientHandler;
 import LoginAndCommunicate.client.handler.LoginResponseHandler;
 import LoginAndCommunicate.client.handler.MessageResponseHandler;
 import LoginAndCommunicate.codec.PacketDecode;
 import LoginAndCommunicate.codec.PacketEncoder;
+import LoginAndCommunicate.spliter.Spliter;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -16,6 +18,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import LoginAndCommunicate.myProtocol.PacketCodeC;
@@ -54,10 +57,15 @@ public class NettyClient {
                     public void initChannel(SocketChannel ch) {
                         //ch.pipeline().addLast(new ClientHandler());//自定义的处理器
                         //使用pipeLine()方式
+                        /*拆包器*/
+                        ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecode());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
+
+                        //粘包测试
+                        //ch.pipeline().addLast(new FirstClientHandler());
                     }
                 });
 
