@@ -5,6 +5,7 @@ import LoginAndCommunicate.packet.response.MessageResponsePacket;
 import LoginAndCommunicate.session.Session;
 import LoginAndCommunicate.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -16,7 +17,12 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @Description:
  *  消息处理逻辑的处理器
  */
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
+    protected MessageRequestHandler(){}
+
     //实现单聊
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket messageRequestPacket) throws Exception {

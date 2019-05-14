@@ -5,6 +5,7 @@ import LoginAndCommunicate.packet.response.ListGroupMembersResponsePacket;
 import LoginAndCommunicate.session.Session;
 import LoginAndCommunicate.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -20,7 +21,12 @@ import java.util.List;
  * @Description:
  *  请求查看指定群组的所有成员的处理器
  */
+@ChannelHandler.Sharable
 public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> {
+
+    public static final ListGroupMembersRequestHandler INSTANCE = new ListGroupMembersRequestHandler();
+    protected ListGroupMembersRequestHandler(){}
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ListGroupMembersRequestPacket requestPacket) throws Exception {
         //1. 获取群的ChannelGroup

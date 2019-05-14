@@ -3,6 +3,7 @@ package LoginAndCommunicate.server.handler;
 import LoginAndCommunicate.session.Session;
 import LoginAndCommunicate.util.IDUtil;
 import LoginAndCommunicate.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import LoginAndCommunicate.packet.request.LoginRequestPacket;
@@ -21,7 +22,14 @@ import java.util.UUID;
  *
  *  不用判断当前对象是否是本handler可以处理的对象。父类进行处理
  */
+//加上注解标识，表明该handler是可以多个channel共享的
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+    //构造单例，单例模式
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
+    protected LoginRequestHandler(){}
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket loginRequestPacket) {
         //登录逻辑
