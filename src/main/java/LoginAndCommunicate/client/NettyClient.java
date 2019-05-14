@@ -1,14 +1,15 @@
 package LoginAndCommunicate.client;
 
-import LoginAndCommunicate.SendAndReceive.LoginUtil;
-import LoginAndCommunicate.SendAndReceive.MessageRequestPacket;
-import LoginAndCommunicate.client.handler.ClientHandler;
-import LoginAndCommunicate.client.handler.FirstClientHandler;
-import LoginAndCommunicate.client.handler.LoginResponseHandler;
-import LoginAndCommunicate.client.handler.MessageResponseHandler;
-import LoginAndCommunicate.codec.PacketDecode;
+import LoginAndCommunicate.client.handler.*;
+import LoginAndCommunicate.console.impl.ConsoleCommandManager;
+import LoginAndCommunicate.console.impl.LoginConsoleCommand;
+import LoginAndCommunicate.packet.request.LoginRequestPacket;
+import LoginAndCommunicate.util.LoginUtil;
+import LoginAndCommunicate.packet.request.MessageRequestPacket;
+import LoginAndCommunicate.codec.PacketDecoder;
 import LoginAndCommunicate.codec.PacketEncoder;
-import LoginAndCommunicate.spliter.Spliter;
+import LoginAndCommunicate.util.SessionUtil;
+import LoginAndCommunicate.util.Spliter;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -18,7 +19,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import LoginAndCommunicate.myProtocol.PacketCodeC;
@@ -59,9 +59,13 @@ public class NettyClient {
                         //使用pipeLine()方式
                         /*拆包器*/
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecode());
+                        ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
 
                         //粘包测试
@@ -101,8 +105,59 @@ public class NettyClient {
         });
     }
 
-    //启动控制台线程
+    //群聊，多用户
     private static void startConsoleThread(final Channel channel){
+        final ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+        final LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+        final Scanner scanner = new Scanner(System.in);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.interrupted()){
+                    if(!SessionUtil.hasLogin(channel)){
+                        loginConsoleCommand.exec(scanner, channel);
+                    } else{
+                        consoleCommandManager.exec(scanner, channel);
+                    }
+                }
+            }
+        }).start();
+    }
+
+
+    //单聊，多用户登录测试
+    private static void startConsoleThread3(final Channel channel){
+        final Scanner sc = new Scanner(System.in);
+        final LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!Thread.interrupted()){
+                    if(!SessionUtil.hasLogin(channel)){
+                        System.out.print("输入用户名登录：");
+                        String userName = sc.nextLine();
+                        loginRequestPacket.setUserName(userName);
+
+                        //密码使用默认密码
+                        loginRequestPacket.setPassword("pwd");
+
+                        //发送登录数据包
+                        channel.writeAndFlush(loginRequestPacket);
+                        waitForLoginResponse();//等待响应
+                    } else{
+                        String toUserId = sc.next();
+                        String message = sc.next();
+                        channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                    }
+                }
+            }
+        }).start();
+    }
+
+    //启动控制台线程，单用户测试用
+    private static void startConsoleThread2(final Channel channel){
         new Thread(
             new Runnable() {
                 @Override
@@ -143,5 +198,14 @@ public class NettyClient {
                         }
                     }
                 }).start();
+    }
+
+    //等待登录响应
+    private static void waitForLoginResponse(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }

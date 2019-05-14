@@ -1,10 +1,8 @@
 package LoginAndCommunicate.client.handler;
 
-import LoginAndCommunicate.SendAndReceive.MessageResponsePacket;
+import LoginAndCommunicate.packet.response.MessageResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.Date;
 
 /**
  * @Author: pyh
@@ -15,8 +13,17 @@ import java.util.Date;
  *  消息回复处理器
  */
 public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageResponsePacket> {
+    //单聊消息处理
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageResponsePacket messageResponsePacket) throws Exception {
-        System.out.println(new Date() + ": 收到服务端的消息: " + messageResponsePacket.getMessage());
+        String fromUserId = messageResponsePacket.getFromUserId();
+        String fromUserName = messageResponsePacket.getFromUserName();
+        System.out.println(fromUserId + ":" + fromUserName + " -> " + messageResponsePacket .getMessage());
     }
+
+    //一般的测试方法
+//    @Override
+//    protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageResponsePacket messageResponsePacket) throws Exception {
+//        System.out.println(new Date() + ": 收到服务端的消息: " + messageResponsePacket.getMessage());
+//    }
 }

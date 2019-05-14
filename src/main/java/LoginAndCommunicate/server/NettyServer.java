@@ -1,12 +1,9 @@
 package LoginAndCommunicate.server;
 
-import LoginAndCommunicate.codec.PacketDecode;
+import LoginAndCommunicate.codec.PacketDecoder;
 import LoginAndCommunicate.codec.PacketEncoder;
-import LoginAndCommunicate.server.handler.AuthHandler;
-import LoginAndCommunicate.server.handler.LifeCycleTestHandler;
-import LoginAndCommunicate.server.handler.LoginRequestHandler;
-import LoginAndCommunicate.server.handler.MessageRequestHandler;
-import LoginAndCommunicate.spliter.Spliter;
+import LoginAndCommunicate.server.handler.*;
+import LoginAndCommunicate.util.Spliter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -50,12 +47,23 @@ public class NettyServer {
                         //ch.pipeline().addLast(new LifeCycleTestHandler());
 
                         //使用pipLine()的方式， 登录和发送消息
-                        /*拆包器，netty自带*/
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecode());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        // 登录请求处理器
                         ch.pipeline().addLast(new LoginRequestHandler());
-                        ch.pipeline().addLast(new AuthHandler());//新增用户认证的handler
+                        ch.pipeline().addLast(new AuthHandler());
+                        // 单聊消息请求处理器
                         ch.pipeline().addLast(new MessageRequestHandler());
+                        // 创建群请求处理器
+                        ch.pipeline().addLast(new CreateGroupRequestHandler());
+                        // 加群请求处理器
+                        ch.pipeline().addLast(new JoinGroupRequestHandler());
+                        // 退群请求处理器
+                        ch.pipeline().addLast(new QuitGroupRequestHandler());
+                        // 获取群成员请求处理器
+                        ch.pipeline().addLast(new ListGroupMembersRequestHandler());
+                        // 登出请求处理器
+                        ch.pipeline().addLast(new LogoutRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
 
                         //粘包测试

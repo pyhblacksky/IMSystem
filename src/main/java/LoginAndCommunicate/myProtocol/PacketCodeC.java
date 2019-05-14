@@ -1,12 +1,9 @@
 package LoginAndCommunicate.myProtocol;
 
-import LoginAndCommunicate.SendAndReceive.MessageRequestPacket;
-import LoginAndCommunicate.SendAndReceive.MessageResponsePacket;
+import LoginAndCommunicate.packet.request.*;
+import LoginAndCommunicate.packet.response.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import LoginAndCommunicate.myProtocol.impl.JSONSerializer;
-import LoginAndCommunicate.myProtocol.impl.LoginRequestPacket;
-import LoginAndCommunicate.myProtocol.impl.LoginResponsePacket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +15,8 @@ import java.util.Map;
  * @Function:
  * @Description:
  *  编码 和 解码相关类
- */import static LoginAndCommunicate.myProtocol.Command.*;
+ */
+import static LoginAndCommunicate.myProtocol.Command.*;
 
 public class PacketCodeC {
     public static final int MAGIC_NUMBER = 0x12345678;//自定义魔数
@@ -34,6 +32,16 @@ public class PacketCodeC {
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetTypeMap.put(LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetTypeMap.put(LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
 
         serializerMap = new HashMap();
         Serializer serializer = new JSONSerializer();

@@ -1,12 +1,15 @@
 package LoginAndCommunicate.server.handler;
 
-import LoginAndCommunicate.SendAndReceive.LoginUtil;
+import LoginAndCommunicate.session.Session;
+import LoginAndCommunicate.util.IDUtil;
+import LoginAndCommunicate.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import LoginAndCommunicate.myProtocol.impl.LoginRequestPacket;
-import LoginAndCommunicate.myProtocol.impl.LoginResponsePacket;
+import LoginAndCommunicate.packet.request.LoginRequestPacket;
+import LoginAndCommunicate.packet.response.LoginResponsePacket;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @Author: pyh
@@ -26,10 +29,13 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
         loginResponsePacket.setVersion(loginRequestPacket.getVersion());
+        loginResponsePacket.setUserName(loginRequestPacket.getUserName());
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
-            LoginUtil.markAsLogin(ctx.channel());//设置登录成功
+            String userId = IDUtil.randomId();
+            loginResponsePacket.setUserId(userId);
             System.out.println(new Date() + ": 登录成功!  欢迎您" + loginRequestPacket.getUserName());
+            SessionUtil.bindSession(new Session(userId, loginRequestPacket.getUserName()), ctx.channel());
         } else {
             loginResponsePacket.setReason("账号密码校验失败");
             loginResponsePacket.setSuccess(false);
@@ -42,5 +48,14 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return true;
+    }
+
+    private static String randomUserId() {
+        return UUID.randomUUID().toString().split("-")[0];
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        SessionUtil.unBindSession(ctx.channel());
     }
 }

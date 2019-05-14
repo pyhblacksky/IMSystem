@@ -1,6 +1,7 @@
 package LoginAndCommunicate.server.handler;
 
-import LoginAndCommunicate.SendAndReceive.LoginUtil;
+import LoginAndCommunicate.util.LoginUtil;
+import LoginAndCommunicate.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -15,9 +16,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class AuthHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if(!LoginUtil.hasLogin(ctx.channel())){
+        if(!SessionUtil.hasLogin(ctx.channel())){
             ctx.channel().close();//未登录，关闭channel
         } else{
+            ctx.pipeline().remove(this);
             super.channelRead(ctx, msg);
         }
     }
