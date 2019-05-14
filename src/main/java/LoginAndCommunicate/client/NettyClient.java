@@ -4,6 +4,7 @@ import LoginAndCommunicate.client.handler.*;
 import LoginAndCommunicate.console.impl.ConsoleCommandManager;
 import LoginAndCommunicate.console.impl.LoginConsoleCommand;
 import LoginAndCommunicate.packet.request.LoginRequestPacket;
+import LoginAndCommunicate.server.handler.IMIdleStateHandler;
 import LoginAndCommunicate.util.LoginUtil;
 import LoginAndCommunicate.packet.request.MessageRequestPacket;
 import LoginAndCommunicate.codec.PacketDecoder;
@@ -57,6 +58,7 @@ public class NettyClient {
                     public void initChannel(SocketChannel ch) {
                         //ch.pipeline().addLast(new ClientHandler());//自定义的处理器
                         //使用pipeLine()方式
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         /*拆包器*/
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
@@ -69,6 +71,9 @@ public class NettyClient {
                         ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new JoinGroupResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
+
+                        //心跳定时器
+                        ch.pipeline().addLast(new HeartBeatTimerHandler());
 
                         //粘包测试
                         //ch.pipeline().addLast(new FirstClientHandler());

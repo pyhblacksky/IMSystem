@@ -46,10 +46,13 @@ public class NettyServer {
                         //生命周期测试
                         //ch.pipeline().addLast(new LifeCycleTestHandler());
 
+                        //空闲检测，放在最前
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         //使用pipLine()的方式， 登录和发送消息
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         ch.pipeline().addLast(AuthHandler.INSTANCE);
                         ch.pipeline().addLast(IMHandler.INSTANCE);
 
