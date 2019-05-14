@@ -1,13 +1,11 @@
 package LoginAndCommunicate.client;
 
-import LoginAndCommunicate.client.handler.CreateGroupResponseHandler;
+import LoginAndCommunicate.client.handler.*;
 import LoginAndCommunicate.console.impl.ConsoleCommandManager;
 import LoginAndCommunicate.console.impl.LoginConsoleCommand;
-import LoginAndCommunicate.packet.LoginRequestPacket;
+import LoginAndCommunicate.packet.request.LoginRequestPacket;
 import LoginAndCommunicate.util.LoginUtil;
-import LoginAndCommunicate.packet.MessageRequestPacket;
-import LoginAndCommunicate.client.handler.LoginResponseHandler;
-import LoginAndCommunicate.client.handler.MessageResponseHandler;
+import LoginAndCommunicate.packet.request.MessageRequestPacket;
 import LoginAndCommunicate.codec.PacketDecoder;
 import LoginAndCommunicate.codec.PacketEncoder;
 import LoginAndCommunicate.util.SessionUtil;
@@ -63,9 +61,11 @@ public class NettyClient {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
-                        //ch.pipeline().addLast(new LogoutResponseHandler());
+                        ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
 
                         //粘包测试

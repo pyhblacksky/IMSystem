@@ -1,18 +1,20 @@
-package LoginAndCommunicate.packet;
+package LoginAndCommunicate.packet.response;
 
 import LoginAndCommunicate.myProtocol.Packet;
 
-import static LoginAndCommunicate.myProtocol.Command.LOGOUT_RESPONSE;
+import static LoginAndCommunicate.myProtocol.Command.QUIT_GROUP_RESPONSE;
 
 /**
  * @Author: pyh
- * @Date: 2019/5/13 20:26
+ * @Date: 2019/5/14 8:33
  * @Version: 1.0
  * @Function:
  * @Description:
- *  登出响应处理包
+ *      退出群组响应的数据包
  */
-public class LogoutResponsePacket extends Packet {
+public class QuitGroupResponsePacket extends Packet {
+
+    private String groupId;
 
     private boolean success;
 
@@ -20,7 +22,15 @@ public class LogoutResponsePacket extends Packet {
 
     @Override
     public Byte getCommand() {
-        return LOGOUT_RESPONSE;
+        return QUIT_GROUP_RESPONSE;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public boolean isSuccess() {

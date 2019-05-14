@@ -1,14 +1,12 @@
 package LoginAndCommunicate.server.handler;
 
-import LoginAndCommunicate.packet.MessageRequestPacket;
-import LoginAndCommunicate.packet.MessageResponsePacket;
+import LoginAndCommunicate.packet.request.MessageRequestPacket;
+import LoginAndCommunicate.packet.response.MessageResponsePacket;
 import LoginAndCommunicate.session.Session;
 import LoginAndCommunicate.util.SessionUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.Date;
 
 /**
  * @Author: pyh

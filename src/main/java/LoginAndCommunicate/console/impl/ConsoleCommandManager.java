@@ -25,10 +25,18 @@ public class ConsoleCommandManager implements ConsoleCommand {
         consoleCommandMap.put("sendToUser", new SendToUserConsoleCommand());
         consoleCommandMap.put("logout", new LogoutConsoleCommand());
         consoleCommandMap.put("createGroup", new CreateGroupConsoleCommand());
+        consoleCommandMap.put("joinGroup", new JoinGroupConsoleCommand());
+        consoleCommandMap.put("listGroupMembers", new ListGroupMembersConsoleCommand());
     }
 
     @Override
     public void exec(Scanner scanner, Channel channel) {
+        System.out.println("请输入指令，目前指令有 ： ");
+        System.out.println("'sendToUser' :  发送消息给某个用户，需要使用userId，并用空格隔开");
+        System.out.println("'logout' : 用户登出");
+        System.out.println("'createGroup': 创建群组，并拉人进群");
+        System.out.println("'joinGroup': 加入群聊");
+        System.out.println("'listGroupMembers': 获取群中的成员列表");
         //获取第一个指令
         String command = scanner.next();
 

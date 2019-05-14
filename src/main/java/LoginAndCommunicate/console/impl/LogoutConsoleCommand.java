@@ -1,7 +1,7 @@
 package LoginAndCommunicate.console.impl;
 
 import LoginAndCommunicate.console.ConsoleCommand;
-import LoginAndCommunicate.packet.LogoutRequestPacket;
+import LoginAndCommunicate.packet.request.LogoutRequestPacket;
 import io.netty.channel.Channel;
 
 import java.util.Scanner;

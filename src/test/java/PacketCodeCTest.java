@@ -3,7 +3,7 @@ import LoginAndCommunicate.myProtocol.Packet;
 import LoginAndCommunicate.myProtocol.PacketCodeC;
 import LoginAndCommunicate.myProtocol.Serializer;
 import LoginAndCommunicate.myProtocol.JSONSerializer;
-import LoginAndCommunicate.packet.LoginRequestPacket;
+import LoginAndCommunicate.packet.request.LoginRequestPacket;
 import org.junit.Assert;
 import org.junit.Test;
 

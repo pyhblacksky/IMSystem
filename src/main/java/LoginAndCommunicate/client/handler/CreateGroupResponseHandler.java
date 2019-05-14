@@ -1,6 +1,6 @@
 package LoginAndCommunicate.client.handler;
 
-import LoginAndCommunicate.packet.CreateGroupResponsePacket;
+import LoginAndCommunicate.packet.response.CreateGroupResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

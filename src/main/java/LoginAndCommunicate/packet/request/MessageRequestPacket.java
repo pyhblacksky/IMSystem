@@ -1,4 +1,4 @@
-package LoginAndCommunicate.packet;
+package LoginAndCommunicate.packet.request;
 
 import LoginAndCommunicate.myProtocol.Packet;
 

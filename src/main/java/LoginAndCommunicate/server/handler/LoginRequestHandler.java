@@ -2,12 +2,11 @@ package LoginAndCommunicate.server.handler;
 
 import LoginAndCommunicate.session.Session;
 import LoginAndCommunicate.util.IDUtil;
-import LoginAndCommunicate.util.LoginUtil;
 import LoginAndCommunicate.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import LoginAndCommunicate.packet.LoginRequestPacket;
-import LoginAndCommunicate.packet.LoginResponsePacket;
+import LoginAndCommunicate.packet.request.LoginRequestPacket;
+import LoginAndCommunicate.packet.response.LoginResponsePacket;
 
 import java.util.Date;
 import java.util.UUID;

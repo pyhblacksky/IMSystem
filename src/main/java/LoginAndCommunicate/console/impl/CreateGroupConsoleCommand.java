@@ -1,7 +1,7 @@
 package LoginAndCommunicate.console.impl;
 
 import LoginAndCommunicate.console.ConsoleCommand;
-import LoginAndCommunicate.packet.CreateGroupRequestPacket;
+import LoginAndCommunicate.packet.request.CreateGroupRequestPacket;
 import io.netty.channel.Channel;
 
 import java.util.Arrays;
